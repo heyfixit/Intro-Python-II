@@ -61,30 +61,67 @@ while True:
 
 # Write a loop that:
 #
+    print(colored("--------", "magenta"))
 # * Prints the current room name
     print(colored(player.current_room.name, 'cyan'))
 # * Prints the current description (the textwrap module might be useful here).
     print(textwrap.fill(player.current_room.description, 70), '\n')
 
-    print("Items:")
+    print(colored( "Room Items:", "yellow" ))
     for item in player.current_room.items:
         print(item)
+
+    print(colored("\nInventory: ", 'yellow'))
+    for item in player.items:
+        print(item)
 # * Waits for user input and decides what to do.
-    cmd = input("\nInput Command: ")
-    print(cmd)
+    split_user_input = input("\nInput Command: ").split(" ")
+    verb = split_user_input[0]
+    obj = split_user_input[1] if len(split_user_input) > 1 else None
+
+# If the user enters "q", quit the game.
+    if(verb == 'q'):
+        exit()
+
+
+    if(verb == 'get'):
+        if obj is None:
+            print(colored("Specify item name", 'red'))
+            continue
+
+        item = next((item for item in player.current_room.items if item.name == obj), None)
+        if item is None:
+            print(colored("Item does not exist in room", 'red'))
+            continue
+
+        player.current_room.items.remove(item)
+        player.add_item(item)
+        continue
+
+    if(verb == 'drop'):
+        if obj is None:
+            print(colored("Specify item name", 'red'))
+            continue
+
+        item = next((item for item in player.items if item.name == obj), None)
+        if item is None:
+            print(colored("Item does not exist in inventory", 'red'))
+            continue
+
+        player.drop_item(item)
+        player.current_room.items.append(item)
+        continue
+
+
 
 #
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
-    while(cmd != 'q' and (not hasattr(player.current_room, f"{cmd}_to")
-                          or getattr(player.current_room, f"{cmd}_to")) is None):
-        print("Nothing in that direction")
-        cmd = input("Input Command: ")
+    if(not hasattr(player.current_room, f"{verb}_to")
+                   or getattr(player.current_room, f"{verb}_to") is None):
+        print(colored("Nothing in that direction", 'red'))
+        continue
 
 
-# If the user enters "q", quit the game.
-    if(cmd == 'q'):
-        exit()
-
-    player.current_room = getattr(player.current_room, f"{cmd}_to")
+    player.current_room = getattr(player.current_room, f"{verb}_to")
