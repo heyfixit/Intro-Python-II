@@ -58,7 +58,7 @@ while True:
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
-    while(cmd != 'q' and not (hasattr(player.room, f"{cmd}_to")
+    while(cmd != 'q' and (not hasattr(player.room, f"{cmd}_to")
                           or getattr(player.room, f"{cmd}_to")) is None):
         print("Nothing in that direction")
         cmd = input("Input Command: ")
