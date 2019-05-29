@@ -6,6 +6,13 @@ class Room:
     e_to = None
     s_to = None
     w_to = None
-    def __init__(self, name, description):
+    def __init__(self, name, description, items=None):
         self.name = name
         self.description = description
+        if(items is None):
+            self.items = []
+        else:
+            self.items = items
+
+    def __str__(self):
+        return f"{self.name} - {self.description}"

@@ -2,6 +2,10 @@
 # currently.
 
 class Player:
+    inventory = []
     def __init__(self, name, room):
-        self.room = room
+        self.current_room = room
         self.name = name
+
+    def __str__(self):
+        return f"{self.name}"
