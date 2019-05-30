@@ -61,23 +61,34 @@ while True:
 
 # Write a loop that:
 #
-    print(colored("--------", "magenta"))
+    print(colored("--------------------------", "magenta"))
 # * Prints the current room name
     print(colored(player.current_room.name, 'cyan'))
 # * Prints the current description (the textwrap module might be useful here).
-    print(textwrap.fill(player.current_room.description, 70), '\n')
+    print(textwrap.fill(player.current_room.description, 70))
+    print(colored(player.current_room.available_directions(), 'cyan'), '\n\n')
 
     print(colored( "Room Items:", "yellow" ))
     for item in player.current_room.items:
         print(item)
 
-    print(colored("\nInventory: ", 'yellow'))
-    for item in player.items:
-        print(item)
+    # print(colored("\nInventory: ", 'yellow'))
+    # for item in player.items:
+    #     print(item)
 # * Waits for user input and decides what to do.
     split_user_input = input("\nInput Command: ").split(" ")
     verb = split_user_input[0]
     obj = split_user_input[1] if len(split_user_input) > 1 else None
+
+    while(verb == 'i' or verb == 'inventory'):
+        print(colored("\nInventory: ", 'yellow'))
+        for item in player.items:
+            print(item)
+        split_user_input = input("\nInput Command: ").split(" ")
+        verb = split_user_input[0]
+        obj = split_user_input[1] if len(split_user_input) > 1 else None
+
+
 
 # If the user enters "q", quit the game.
     if(verb == 'q'):
@@ -89,12 +100,11 @@ while True:
             print(colored("Specify item name", 'red'))
             continue
 
-        item = next((item for item in player.current_room.items if item.name == obj), None)
-        if item is None:
+        item = player.current_room.remove_item(obj)
+        if not item:
             print(colored("Item does not exist in room", 'red'))
             continue
 
-        player.current_room.items.remove(item)
         player.add_item(item)
         continue
 
@@ -103,12 +113,11 @@ while True:
             print(colored("Specify item name", 'red'))
             continue
 
-        item = next((item for item in player.items if item.name == obj), None)
-        if item is None:
+        item = player.drop_item(obj)
+        if not item:
             print(colored("Item does not exist in inventory", 'red'))
             continue
 
-        player.drop_item(item)
         player.current_room.items.append(item)
         continue
 

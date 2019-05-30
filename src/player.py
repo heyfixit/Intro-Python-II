@@ -17,9 +17,14 @@ class Player:
         self.items.append(item)
         self.on_take(item)
 
-    def drop_item(self, item):
-        self.items.remove(item)
-        self.on_drop(item)
+    def drop_item(self, name):
+        found_item = next((item for item in self.items if item.name == name), None)
+        if found_item is not None:
+            self.items.remove(found_item)
+            self.on_drop(found_item)
+            return found_item
+        else:
+            return False
 
     def on_take(self, item):
         print(f"You have picked up {item.name}.")
