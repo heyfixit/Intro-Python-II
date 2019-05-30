@@ -4,6 +4,7 @@ import random
 import textwrap
 from item import Item
 from termcolor import colored
+from treasure import Treasure
 
 items = [
     [ "item1", "description1" ],
@@ -17,25 +18,25 @@ items = [
 room = {
     'outside':  Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons",
-                     [Item(*v) for v in random.sample(items,2)]),
+                     [random.choice([Item(*v), Treasure(*v)]) for v in random.sample(items,2)]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east.""",
-                     [Item(*v) for v in random.sample(items,2)]),
+                     [random.choice([Item(*v), Treasure(*v)]) for v in random.sample(items,2)]),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
 the distance, but there is no way across the chasm.""",
-                     [Item(*v) for v in random.sample(items,2)]),
+                     [random.choice([Item(*v), Treasure(*v)]) for v in random.sample(items,2)]),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air.""",
-                     [Item(*v) for v in random.sample(items,2)]),
+                     [random.choice([Item(*v), Treasure(*v)]) for v in random.sample(items,2)]),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south.""",
-                     [Item(*v) for v in random.sample(items,2)]),
+                     [random.choice([Item(*v), Treasure(*v)]) for v in random.sample(items,2)]),
 }
 
 
